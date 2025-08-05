@@ -2,12 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+This is a Rails 8.0.2 e-commerce application featuring product management with categories for shirts, socks, jackets, and shoes.
+
 ## Development Commands
 
 ### Server & Development
 - `bin/rails server` - Start the Rails development server (default port 3000)
+- `bin/rails server -p 4000` - Start server on custom port
 - `bin/rails console` - Open Rails console for interactive debugging
 - `bin/rails generate` - Generate Rails components (controllers, models, migrations, etc.)
+- `bin/rails runner "Product.count"` - Run Ruby code in Rails environment
 
 ### Database Operations
 - `bin/rails db:setup` - Create database, run migrations, and seed data
@@ -18,9 +23,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Testing & Quality
 - `bin/rails test` - Run the full test suite
+- `bin/rails test:system` - Run system tests
 - `bin/rails test test/models/product_test.rb` - Run specific test file
-- `bundle exec rubocop` - Run Ruby linting (Omakase styling)
-- `bundle exec brakeman` - Run security vulnerability scanning
+- `bin/rubocop` - Run Ruby linting (Omakase styling)
+- `bin/brakeman` - Run security vulnerability scanner
 
 ### Asset & Deployment
 - `bin/rails assets:precompile` - Precompile assets for production
@@ -29,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Standards
 
 ### Pre-commit Requirements
-- **ALWAYS run linting before checkins**: Execute `bundle exec rubocop` and fix all issues
+- **ALWAYS run linting before checkins**: Execute `bin/rubocop` and fix all issues
 - **Target 90-100% test coverage**: Ensure comprehensive test coverage for all new code
 - Run `bin/rails test` to verify all tests pass before committing
 
@@ -50,10 +56,27 @@ This is a Rails 8 e-commerce store application focused on product catalog functi
   - `show`: Displays individual product details
 - Routes: RESTful products resource with root pointing to products#index
 
+### Views
+- **Products Index** (`app/views/products/index.html.erb`)
+  - Category filter buttons
+  - Product cards with name, category, price, description
+  - Responsive styling with inline CSS
+  
+- **Products Show** (`app/views/products/show.html.erb`)
+  - Detailed product information
+  - Navigation back to index and category filter
+
 ### Database Schema
-- Products table: name (string), category (string), price (decimal 8,2), description (text), timestamps
-- Uses SQLite3 in development
-- Seed data includes sample products across all categories
+```ruby
+create_table "products" do |t|
+  t.string "name"
+  t.datetime "created_at", null: false
+  t.datetime "updated_at", null: false
+  t.string "category"
+  t.decimal "price", precision: 8, scale: 2
+  t.text "description"
+end
+```
 
 ### Frontend Stack
 - **Hotwire**: Turbo + Stimulus for SPA-like experience without complex JavaScript
@@ -75,3 +98,25 @@ This is a Rails 8 e-commerce store application focused on product catalog functi
 - System tests with Capybara + Selenium
 - **Current test coverage**: 24 tests, 80 assertions, comprehensive coverage of all models and controllers
 - Controller testing support via `rails-controller-testing` gem
+
+## Sample Data
+The `db/seeds.rb` file contains 12 sample products:
+- 3 shirts (t-shirt, denim shirt, polo)
+- 3 socks (cotton crew, wool hiking, athletic)
+- 3 jackets (leather bomber, rain jacket, fleece hoodie)  
+- 3 shoes (canvas sneakers, dress shoes, running shoes)
+
+## Deployment
+- Dockerized with Kamal deployment configuration
+- GitHub Actions CI/CD pipeline included
+- Security scanning with Brakeman
+- Code quality checks with RuboCop
+
+## Development Notes
+- Fixed nil price formatting issue in `Product#formatted_price`
+- Added proper decimal precision for price field (8,2)
+- Implemented category-based filtering with clean URLs
+- Enhanced UI with responsive product cards and navigation
+
+## GitHub Repository
+https://github.com/awynne/store
