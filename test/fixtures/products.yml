@@ -1,7 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  name: MyString
+shirt:
+  name: Test Shirt
+  category: shirts
+  price: 29.99
+  description: A comfortable test shirt
 
-two:
-  name: MyString
+sock:
+  name: Test Socks
+  category: socks
+  price: 12.99
+  description: Comfortable test socks
+
+jacket:
+  name: Test Jacket
+  category: jackets
+  price: 89.99
+  description: Warm test jacket
+
+shoe:
+  name: Test Shoes
+  category: shoes
+  price: 79.99
+  description: Comfortable test shoes

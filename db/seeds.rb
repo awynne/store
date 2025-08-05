@@ -7,17 +7,17 @@ products = [
   { name: "Classic White T-Shirt", category: "shirts", price: 19.99, description: "A comfortable cotton t-shirt perfect for everyday wear." },
   { name: "Denim Button-Up Shirt", category: "shirts", price: 49.99, description: "Classic denim shirt with a modern fit and durable construction." },
   { name: "Polo Shirt", category: "shirts", price: 34.99, description: "Elegant polo shirt made from premium cotton blend." },
-  
+
   # Socks
   { name: "Cotton Crew Socks", category: "socks", price: 12.99, description: "Soft and breathable crew socks for everyday comfort." },
   { name: "Wool Hiking Socks", category: "socks", price: 18.99, description: "Durable merino wool socks perfect for outdoor activities." },
   { name: "Athletic Running Socks", category: "socks", price: 15.99, description: "Moisture-wicking socks designed for athletic performance." },
-  
+
   # Jackets
   { name: "Leather Bomber Jacket", category: "jackets", price: 199.99, description: "Premium leather bomber jacket with classic styling." },
   { name: "Waterproof Rain Jacket", category: "jackets", price: 89.99, description: "Lightweight and breathable rain jacket for outdoor adventures." },
   { name: "Fleece Zip-Up Hoodie", category: "jackets", price: 59.99, description: "Cozy fleece hoodie perfect for casual wear and layering." },
-  
+
   # Shoes
   { name: "Canvas Sneakers", category: "shoes", price: 79.99, description: "Classic canvas sneakers with rubber sole and comfortable fit." },
   { name: "Leather Dress Shoes", category: "shoes", price: 149.99, description: "Elegant leather oxfords perfect for formal occasions." },
