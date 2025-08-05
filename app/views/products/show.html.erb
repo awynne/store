@@ -1,0 +1,26 @@
+<div class="product-detail" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+  <h1><%= @product.name %></h1>
+  
+  <div class="product-info" style="margin: 2rem 0;">
+    <p class="category" style="color: #666; text-transform: capitalize; margin-bottom: 0.5rem;">
+      <strong>Category:</strong> <%= @product.category %>
+    </p>
+    
+    <p class="price" style="font-size: 1.5rem; font-weight: bold; color: #2563eb; margin-bottom: 1rem;">
+      <%= @product.formatted_price %>
+    </p>
+    
+    <% if @product.description.present? %>
+      <div class="description" style="color: #555; line-height: 1.6;">
+        <strong>Description:</strong>
+        <p><%= @product.description %></p>
+      </div>
+    <% end %>
+  </div>
+  
+  <div class="actions" style="margin-top: 2rem;">
+    <%= link_to "← Back to Products", products_path, style: "color: #2563eb; text-decoration: none;" %>
+    <span style="margin: 0 1rem;">|</span>
+    <%= link_to "View #{@product.category.capitalize}", products_path(category: @product.category), style: "color: #2563eb; text-decoration: none;" %>
+  </div>
+</div>
