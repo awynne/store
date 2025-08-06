@@ -1,4 +1,8 @@
 <div class="product-detail" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+  <% if @product.photo.present? %>
+    <img src="<%= @product.photo %>" alt="<%= @product.name %>" class="product-photo" style="width: 100%; max-width: 400px; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 2rem;">
+  <% end %>
+  
   <h1><%= @product.name %></h1>
   
   <div class="product-info" style="margin: 2rem 0;">
