@@ -156,3 +156,4 @@ https://github.com/awynne/webstore
 
 ## Development Guidance
 - Any issue in the Backlog is ready to pull and work on
+- Only backlog items should be considered ready to work on.  Don't take an issue that is in "no status"

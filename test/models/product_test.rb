@@ -6,7 +6,8 @@ class ProductTest < ActiveSupport::TestCase
       name: "Test Shirt",
       price: 29.99,
       category: "shirts",
-      description: "A test shirt description"
+      description: "A test shirt description",
+      photo: "https://example.com/test-photo.jpg"
     )
   end
 
@@ -52,6 +53,16 @@ class ProductTest < ActiveSupport::TestCase
     @valid_product.category = "invalid_category"
     assert_not @valid_product.valid?
     assert_includes @valid_product.errors[:category], "is not included in the list"
+  end
+
+  test "should require photo" do
+    @valid_product.photo = nil
+    assert_not @valid_product.valid?
+    assert_includes @valid_product.errors[:photo], "can't be blank"
+
+    @valid_product.photo = ""
+    assert_not @valid_product.valid?
+    assert_includes @valid_product.errors[:photo], "can't be blank"
   end
 
   # Business logic tests

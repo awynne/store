@@ -108,12 +108,121 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal product, assigns(:product)
   end
 
+  # New action tests
+  test "should get new" do
+    get new_product_url
+    assert_response :success
+  end
+
+  test "new should display product form" do
+    get new_product_url
+    assert_response :success
+
+    assert_select "form"
+    assert_select "input[name='product[name]']"
+    assert_select "select[name='product[category]']"
+    assert_select "input[name='product[price]']"
+    assert_select "input[name='product[photo]']"
+    assert_select "textarea[name='product[description]']"
+  end
+
+  # Create action tests
+  test "should create product" do
+    assert_difference("Product.count") do
+      post products_url, params: {
+        product: {
+          name: "New Test Product",
+          category: "shirts",
+          price: 25.99,
+          description: "A new test product",
+          photo: "https://example.com/new-photo.jpg"
+        }
+      }
+    end
+
+    assert_redirected_to product_url(Product.last)
+  end
+
+  test "should not create product with invalid data" do
+    assert_no_difference("Product.count") do
+      post products_url, params: {
+        product: {
+          name: "",
+          category: "invalid",
+          price: -10,
+          photo: ""
+        }
+      }
+    end
+
+    assert_response :unprocessable_content
+  end
+
+  # Edit action tests
+  test "should get edit" do
+    product = products(:shirt)
+    get edit_product_url(product)
+    assert_response :success
+  end
+
+  test "edit should display product form with current values" do
+    product = products(:shirt)
+    get edit_product_url(product)
+    assert_response :success
+
+    assert_select "form"
+    assert_select "input[name='product[name]'][value=?]", product.name
+    assert_select "input[name='product[photo]'][value=?]", product.photo
+  end
+
+  # Update action tests
+  test "should update product" do
+    product = products(:shirt)
+    patch product_url(product), params: {
+      product: {
+        name: "Updated Test Shirt",
+        photo: "https://example.com/updated-photo.jpg"
+      }
+    }
+
+    assert_redirected_to product_url(product)
+    product.reload
+    assert_equal "Updated Test Shirt", product.name
+    assert_equal "https://example.com/updated-photo.jpg", product.photo
+  end
+
+  test "should not update product with invalid data" do
+    product = products(:shirt)
+    original_name = product.name
+
+    patch product_url(product), params: {
+      product: {
+        name: "",
+        price: -10
+      }
+    }
+
+    assert_response :unprocessable_content
+    product.reload
+    assert_equal original_name, product.name
+  end
+
+  # Destroy action tests
+  test "should destroy product" do
+    product = products(:shirt)
+    assert_difference("Product.count", -1) do
+      delete product_url(product)
+    end
+
+    assert_redirected_to products_url
+  end
+
   # Root route test
   test "root should redirect to products index" do
     get root_url
     assert_response :success
 
     # Should render products index content
-    assert_select "h1", text: "Products"
+    assert_match "Products", response.body
   end
 end
