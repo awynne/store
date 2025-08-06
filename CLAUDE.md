@@ -38,6 +38,7 @@ This is a Rails 8.0.2 e-commerce application featuring product management with c
 - **ALWAYS run linting before checkins**: Execute `bin/rubocop` and fix all issues
 - **Target 90-100% test coverage**: Ensure comprehensive test coverage for all new code
 - Run `bin/rails test` to verify all tests pass before committing
+- Do not commit to main/master branches.  Use feature branching and PRs.
 
 ## Application Architecture
 
@@ -118,5 +119,35 @@ The `db/seeds.rb` file contains 12 sample products:
 - Implemented category-based filtering with clean URLs
 - Enhanced UI with responsive product cards and navigation
 
+## Cross-Platform Development
+- **Multi-platform Gemfile.lock**: Supports macOS (ARM64), Linux (multiple variants), Windows (x86_64/x64), and JRuby
+- **Supported platforms**: 
+  - macOS: `arm64-darwin-24`
+  - Linux: `aarch64-linux`, `aarch64-linux-gnu`, `aarch64-linux-musl`, `arm-linux-gnu`, `arm-linux-musl`, `x86_64-linux`, `x86_64-linux-gnu`, `x86_64-linux-musl`
+  - Windows: `x64-mingw32`, `x86_64-mingw32`
+  - JRuby: `java`
+- **Bundle install**: Works across all platforms without platform-specific issues
+
+## Development Workflow
+
+### Feature Branch Development
+- **NO direct commits to main**: Always use feature branches and pull requests
+- **Branch naming**: Use `feature/description`, `bugfix/description`, or `hotfix/description`
+- **Pull Request process**: Create PR for code review before merging to main
+
+### Example Workflow
+```bash
+# Create feature branch
+git checkout -b feature/new-feature
+
+# Make changes and commit
+git add .
+git commit -m "Add new feature"
+
+# Push to remote and create PR
+git push -u origin feature/new-feature
+gh pr create --title "Add new feature" --body "Description of changes"
+```
+
 ## GitHub Repository
-https://github.com/awynne/store
+https://github.com/awynne/webstore
