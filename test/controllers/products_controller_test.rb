@@ -134,7 +134,8 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     assert_select "form"
     assert_select "input[name='product[name]']"
-    assert_select "select[name='product[category]']"
+    assert_select "select[name='product[category_id]']"
+    assert_select "select[name='product[subcategory_id]']"
     assert_select "input[name='product[price]']"
     assert_select "input[name='product[photo]']"
     assert_select "textarea[name='product[description]']"
@@ -142,11 +143,12 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
   # Create action tests
   test "should create product" do
+    category = categories(:clothing)
     assert_difference("Product.count") do
       post products_url, params: {
         product: {
           name: "New Test Product",
-          category: "shirts",
+          category_id: category.id,
           price: 25.99,
           description: "A new test product",
           photo: "https://example.com/new-photo.jpg"
@@ -162,7 +164,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
       post products_url, params: {
         product: {
           name: "",
-          category: "invalid",
+          category_id: nil,
           price: -10,
           photo: ""
         }

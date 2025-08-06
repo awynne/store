@@ -6,8 +6,11 @@
   <h1><%= @product.name %></h1>
   
   <div class="product-info" style="margin: 2rem 0;">
-    <p class="category" style="color: #666; text-transform: capitalize; margin-bottom: 0.5rem;">
+    <p class="category" style="color: #666; margin-bottom: 0.5rem;">
       <strong>Category:</strong> <%= @product.category.name %>
+      <% if @product.subcategory %>
+        > <%= @product.subcategory.name %>
+      <% end %>
     </p>
     
     <p class="price" style="font-size: 1.5rem; font-weight: bold; color: #2563eb; margin-bottom: 1rem;">
