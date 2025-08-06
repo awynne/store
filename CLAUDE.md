@@ -135,6 +135,7 @@ The `db/seeds.rb` file contains 12 sample products:
 - **NO direct commits to main**: Always use feature branches and pull requests
 - **Branch naming**: Use `feature/description`, `bugfix/description`, or `hotfix/description`
 - **Pull Request process**: Create PR for code review before merging to main
+- **Feature branch naming convention**: Name feature branches based on the github project issue number plus essential parts of the issue name
 
 ### Example Workflow
 ```bash
@@ -152,3 +153,6 @@ gh pr create --title "Add new feature" --body "Description of changes"
 
 ## GitHub Repository
 https://github.com/awynne/webstore
+
+## Development Guidance
+- Any issue in the Backlog is ready to pull and work on
