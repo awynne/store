@@ -2,9 +2,10 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @products = Product.by_category(params[:category])
+    @products = filter_products
     @categories = Product.categories
     @selected_category = params[:category]
+    @selected_subcategory = params[:subcategory]
   end
 
   def show
@@ -47,6 +48,18 @@ class ProductsController < ApplicationController
   end
 
   def product_params
-    params.require(:product).permit(:name, :category, :price, :description, :photo)
+    params.require(:product).permit(:name, :category_id, :subcategory_id, :price, :description, :photo)
+  end
+
+  def filter_products
+    products = Product.all
+
+    if params[:subcategory].present?
+      products = products.by_subcategory(params[:subcategory])
+    elsif params[:category].present?
+      products = products.by_category(params[:category])
+    end
+
+    products
   end
 end

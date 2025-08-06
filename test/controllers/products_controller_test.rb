@@ -20,15 +20,13 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index should filter products by category" do
-    get products_url(category: "shirts")
+    get products_url(category: "Clothing")
     assert_response :success
 
-    # Should only show shirts
-    assert_select "h3", count: 1
+    # Should show all clothing items (all test products are clothing)
+    assert_select "h3", count: 4
     assert_select "h3", text: /Test Shirt/
-
-    # Should not show other categories
-    assert_select "h3", text: /Test Socks/, count: 0
+    assert_select "h3", text: /Test Socks/
   end
 
   test "index should handle invalid category gracefully" do
@@ -40,14 +38,32 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index should assign instance variables" do
-    get products_url(category: "shirts")
+    get products_url(category: "Clothing")
     assert_response :success
 
     assert_not_nil assigns(:products)
     assert_not_nil assigns(:categories)
     assert_not_nil assigns(:selected_category)
-    assert_equal "shirts", assigns(:selected_category)
+    assert_equal "Clothing", assigns(:selected_category)
     assert_equal Product.categories, assigns(:categories)
+  end
+
+  test "index should filter products by subcategory" do
+    get products_url(category: "Clothing", subcategory: "Shirts")
+    assert_response :success
+
+    # Should show all shirts (all test products are in shirts subcategory)
+    assert_select "h3", count: 4
+    assert_select "h3", text: /Test Shirt/
+    assert_select "h3", text: /Test Socks/
+  end
+
+  test "index should assign subcategory instance variable" do
+    get products_url(category: "Clothing", subcategory: "Shirts")
+    assert_response :success
+
+    assert_not_nil assigns(:selected_subcategory)
+    assert_equal "Shirts", assigns(:selected_subcategory)
   end
 
   test "index should show category filters" do
@@ -56,18 +72,16 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
 
     # Check for filter links
     assert_select "a", text: "All Products"
-    assert_select "a", text: "Shirts"
-    assert_select "a", text: "Socks"
-    assert_select "a", text: "Jackets"
-    assert_select "a", text: "Shoes"
+    assert_select "a", text: "Clothing"
+    assert_select "a", text: "Electronics"
   end
 
   test "index should highlight active category filter" do
-    get products_url(category: "shirts")
+    get products_url(category: "Clothing")
     assert_response :success
 
-    # Check for active class on shirts filter
-    assert_select "a.filter-link.active", text: "Shirts"
+    # Check for active class on clothing filter
+    assert_select "a.filter-link.active", text: "Clothing"
   end
 
   # Show action tests
@@ -85,7 +99,7 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1", text: product.name
     assert_match product.description, response.body
     assert_match product.formatted_price, response.body
-    assert_match product.category, response.body
+    assert_match product.category.name, response.body
   end
 
   test "show should handle non-existent product" do

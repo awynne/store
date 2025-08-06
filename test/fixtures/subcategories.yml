@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+shirts:
+  name: Shirts
+  category: clothing
+
+audio:
+  name: Audio
+  category: electronics
+
+technology:
+  name: Technology
+  category: books
+
+kitchen:
+  name: Kitchen
+  category: home
+
+tools:
+  name: Tools
+  category: garden

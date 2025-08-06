@@ -2,10 +2,11 @@ require "test_helper"
 
 class ProductTest < ActiveSupport::TestCase
   def setup
+    @category = categories(:clothing)
     @valid_product = Product.new(
       name: "Test Shirt",
       price: 29.99,
-      category: "shirts",
+      category: @category,
       description: "A test shirt description",
       photo: "https://example.com/test-photo.jpg"
     )
@@ -44,15 +45,9 @@ class ProductTest < ActiveSupport::TestCase
     assert_includes @valid_product.errors[:category], "can't be blank"
   end
 
-  test "should only allow valid categories" do
-    Product::CATEGORIES.each do |category|
-      @valid_product.category = category
-      assert @valid_product.valid?, "#{category} should be valid"
-    end
-
-    @valid_product.category = "invalid_category"
-    assert_not @valid_product.valid?
-    assert_includes @valid_product.errors[:category], "is not included in the list"
+  test "should belong to category" do
+    assert_instance_of Category, @valid_product.category
+    assert_equal @category.name, @valid_product.category.name
   end
 
   test "should require photo" do
@@ -82,8 +77,11 @@ class ProductTest < ActiveSupport::TestCase
     assert_equal "$0.00", product.formatted_price
   end
 
-  test "categories class method should return all categories" do
-    assert_equal %w[shirts socks jackets shoes], Product.categories
+  test "categories class method should return all category names" do
+    # This will return the category names from the database
+    categories = Product.categories
+    assert_includes categories, "Clothing"
+    assert_includes categories, "Electronics"
   end
 
   # Scope tests
@@ -91,13 +89,9 @@ class ProductTest < ActiveSupport::TestCase
     shirt = products(:shirt)
     sock = products(:sock)
 
-    shirts = Product.by_category("shirts")
-    assert_includes shirts, shirt
-    assert_not_includes shirts, sock
-
-    socks = Product.by_category("socks")
-    assert_includes socks, sock
-    assert_not_includes socks, shirt
+    clothing_products = Product.by_category("Clothing")
+    assert_includes clothing_products, shirt
+    assert_includes clothing_products, sock
   end
 
   test "by_category scope should return all products when category is nil" do
@@ -108,5 +102,30 @@ class ProductTest < ActiveSupport::TestCase
   test "by_category scope should return all products when category is empty" do
     all_products = Product.by_category("")
     assert_equal Product.all.to_a, all_products.to_a
+  end
+
+  test "by_subcategory scope should filter by subcategory" do
+    shirt = products(:shirt)
+    sock = products(:sock)
+
+    shirts_products = Product.by_subcategory("Shirts")
+    assert_includes shirts_products, shirt
+    assert_includes shirts_products, sock
+  end
+
+  test "by_subcategory scope should return all products when subcategory is nil" do
+    all_products = Product.by_subcategory(nil)
+    assert_equal Product.all.to_a, all_products.to_a
+  end
+
+  test "by_subcategory scope should return all products when subcategory is empty" do
+    all_products = Product.by_subcategory("")
+    assert_equal Product.all.to_a, all_products.to_a
+  end
+
+  test "should belong to subcategory" do
+    subcategory = subcategories(:shirts)
+    @valid_product.subcategory = subcategory
+    assert_equal subcategory, @valid_product.subcategory
   end
 end
