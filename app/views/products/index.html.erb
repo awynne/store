@@ -4,9 +4,22 @@
 </div>
 
 <div class="filters" style="margin-bottom: 2rem;">
-  <%= link_to "All Products", products_path, class: "filter-link #{'active' unless @selected_category}" %>
-  <% @categories.each do |category| %>
-    <%= link_to category.capitalize, products_path(category: category), class: "filter-link #{'active' if @selected_category == category}" %>
+  <%= link_to "All Products", products_path, class: "filter-link #{'active' unless @selected_category || @selected_subcategory}" %>
+  
+  <% Category.includes(:subcategories).each do |category| %>
+    <div class="category-dropdown" style="display: inline-block; position: relative;">
+      <%= link_to category.name.capitalize, products_path(category: category.name), 
+          class: "filter-link category-link #{'active' if @selected_category == category.name && !@selected_subcategory}",
+          data: { category: category.name } %>
+      
+      <div class="dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; background: white; border: 1px solid #ddd; border-radius: 6px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 1000; min-width: 200px;">
+        <% category.subcategories.each do |subcategory| %>
+          <%= link_to subcategory.name, products_path(category: category.name, subcategory: subcategory.name),
+              class: "dropdown-item #{'active' if @selected_subcategory == subcategory.name}",
+              style: "display: block; padding: 0.5rem 1rem; text-decoration: none; color: #374151; border-bottom: 1px solid #f3f4f6;" %>
+        <% end %>
+      </div>
+    </div>
   <% end %>
 </div>
 
@@ -17,7 +30,12 @@
         <img src="<%= product.photo %>" alt="<%= product.name %>" class="product-photo" style="width: 100%; max-width: 300px; height: 200px; object-fit: cover; border-radius: 6px; margin-bottom: 1rem;">
       <% end %>
       <h3><%= link_to product.name, product_path(product) %></h3>
-      <p class="category" style="color: #666; text-transform: capitalize;"><%= product.category %></p>
+      <p class="category" style="color: #666;">
+        <%= product.category.name %>
+        <% if product.subcategory %>
+          > <%= product.subcategory.name %>
+        <% end %>
+      </p>
       <p class="price" style="font-weight: bold; color: #2563eb;"><%= product.formatted_price %></p>
       <% if product.description.present? %>
         <p class="description" style="color: #555;"><%= truncate(product.description, length: 100) %></p>
@@ -39,6 +57,7 @@
     background-color: #f3f4f6;
     border-radius: 6px;
     color: #374151;
+    cursor: pointer;
   }
   
   .filter-link:hover {
@@ -49,5 +68,65 @@
     background-color: #2563eb;
     color: white;
   }
+  
+  .category-dropdown {
+    margin-right: 0.5rem;
+  }
+  
+  .category-dropdown:hover .dropdown-menu {
+    display: block !important;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .dropdown-item.active {
+    background-color: #2563eb;
+    color: white;
+  }
+  
+  .dropdown-item:last-child {
+    border-bottom: none;
+  }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const categoryLinks = document.querySelectorAll('.category-link');
+    const dropdowns = document.querySelectorAll('.category-dropdown');
+    
+    // Handle dropdown visibility on click for mobile
+    categoryLinks.forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          const dropdown = this.parentNode.querySelector('.dropdown-menu');
+          const isVisible = dropdown.style.display === 'block';
+          
+          // Hide all dropdowns
+          document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
+            menu.style.display = 'none';
+          });
+          
+          // Show current dropdown if it wasn't visible
+          if (!isVisible) {
+            dropdown.style.display = 'block';
+          }
+        }
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.category-dropdown')) {
+        document.querySelectorAll('.dropdown-menu').forEach(function(menu) {
+          if (window.innerWidth <= 768) {
+            menu.style.display = 'none';
+          }
+        });
+      }
+    });
+  });
+</script>
 

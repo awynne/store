@@ -157,3 +157,15 @@ https://github.com/awynne/webstore
 ## Development Guidance
 - Any issue in the Backlog is ready to pull and work on
 - Only backlog items should be considered ready to work on.  Don't take an issue that is in "no status"
+
+## Issue Management Workflow
+- The Github project for this repo is WebStore
+- Modify issue statuses as issues get moved through the workflow. 
+- When creating a new issue, add it to the Backlog status. 
+- The project owner then reviews issues and moves the ones to work on to the Ready status.  
+- You can pick the next item in the ready column and move it to "In Progress". 
+- make comments in the issue as significant changes are made. 
+- test, commit, and push to remote, 
+- then create a PR with mention to @awynne and move issue to Review
+- add relevant commits and PR links to the issue comments. 
+- Once a PR has been merged, its issue can be moved to done, and the feature branch deleted.
