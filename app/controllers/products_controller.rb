@@ -1,5 +1,8 @@
 class ProductsController < ApplicationController
+  include AdminAuthorization
+
   before_action :set_product, only: [ :show, :edit, :update, :destroy ]
+  before_action :require_admin, only: [ :new, :create, :edit, :update, :destroy ]
 
   def index
     @products = filter_products

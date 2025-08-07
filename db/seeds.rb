@@ -100,3 +100,28 @@ products.each do |product_attrs|
     product.photo = product_attrs[:photo]
   end
 end
+
+puts "Creating admin user..."
+
+# Create an admin user (local account only)
+admin_user = User.find_or_create_by(email: "admin@webstore.com") do |user|
+  user.password = "password123"
+  user.password_confirmation = "password123"
+  user.admin = true
+  # Explicitly leave provider/uid blank to ensure local account
+  user.provider = nil
+  user.uid = nil
+end
+
+if admin_user.persisted?
+  puts "✓ Admin user created/found: #{admin_user.email} (Admin: #{admin_user.admin?})"
+else
+  puts "✗ Failed to create admin user: #{admin_user.errors.full_messages.join(', ')}"
+end
+
+puts "\nSeeding completed!"
+puts "Products: #{Product.count}"
+puts "Categories: #{Category.count}"
+puts "Subcategories: #{Subcategory.count}"
+puts "Users: #{User.count}"
+puts "Admin users: #{User.where(admin: true).count}"

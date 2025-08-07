@@ -1,6 +1,8 @@
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
   <h1>Products</h1>
-  <%= link_to "New Product", new_product_path, style: "background-color: #10b981; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 6px;" %>
+  <% if user_signed_in? && current_user.admin? %>
+    <%= link_to "New Product", new_product_path, style: "background-color: #10b981; color: white; padding: 0.5rem 1rem; text-decoration: none; border-radius: 6px;" %>
+  <% end %>
 </div>
 
 <div class="filters" style="margin-bottom: 2rem;">
@@ -40,10 +42,12 @@
       <% if product.description.present? %>
         <p class="description" style="color: #555;"><%= truncate(product.description, length: 100) %></p>
       <% end %>
-      <div class="product-actions" style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
-        <%= link_to "Edit", edit_product_path(product), style: "color: #2563eb; text-decoration: none; margin-right: 1rem;" %>
-        <%= link_to "Delete", product_path(product), method: :delete, data: { confirm: "Are you sure?" }, style: "color: #dc2626; text-decoration: none;" %>
-      </div>
+      <% if user_signed_in? && current_user.admin? %>
+        <div class="product-actions" style="margin-top: 1rem; border-top: 1px solid #e5e7eb; padding-top: 1rem;">
+          <%= link_to "Edit", edit_product_path(product), style: "color: #2563eb; text-decoration: none; margin-right: 1rem;" %>
+          <%= link_to "Delete", product_path(product), method: :delete, data: { confirm: "Are you sure?" }, style: "color: #dc2626; text-decoration: none;" %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>

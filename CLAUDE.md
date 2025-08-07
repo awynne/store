@@ -169,3 +169,6 @@ https://github.com/awynne/webstore
 - then create a PR with mention to @awynne and move issue to Review
 - add relevant commits and PR links to the issue comments. 
 - Once a PR has been merged, its issue can be moved to done, and the feature branch deleted.
+
+## Pull Request Best Practices
+- When you fix an issue in a PR, leave a comment stating what has been done and that it is fixed

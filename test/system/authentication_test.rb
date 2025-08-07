@@ -29,7 +29,7 @@ class AuthenticationTest < ApplicationSystemTestCase
 
   test "sign out link works when user is signed in" do
     # Test that the UI shows correctly for authenticated state
-    user = users(:regular_user)
+    user = users(:regular)
 
     # Using Rails' sign_in helper for system tests
     visit root_path
