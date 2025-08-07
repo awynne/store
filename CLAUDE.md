@@ -133,42 +133,54 @@ The `db/seeds.rb` file contains 12 sample products:
 
 ### Feature Branch Development
 - **NO direct commits to main**: Always use feature branches and pull requests
-- **Branch naming**: Use `feature/description`, `bugfix/description`, or `hotfix/description`
+- **Branch naming**: Use Jira issue key format: `feature/WS-{issue-number}-{description}`, `bugfix/WS-{issue-number}-{description}`
 - **Pull Request process**: Create PR for code review before merging to main
-- **Feature branch naming convention**: Name feature branches based on the github project issue number plus essential parts of the issue name
+- **Commit messages**: Include Jira issue key for automatic linking (e.g., "WS-2 Add shopping cart model")
 
 ### Example Workflow
 ```bash
-# Create feature branch
-git checkout -b feature/new-feature
+# Create feature branch using Jira issue key
+git checkout -b feature/WS-2-shopping-cart
 
-# Make changes and commit
+# Make changes and commit with Jira reference
 git add .
-git commit -m "Add new feature"
+git commit -m "WS-2 Add Cart and CartItem models with associations"
 
 # Push to remote and create PR
-git push -u origin feature/new-feature
-gh pr create --title "Add new feature" --body "Description of changes"
+git push -u origin feature/WS-2-shopping-cart
+gh pr create --title "WS-2: Create shopping cart functionality" --body "Implements shopping cart as described in https://awynnejira.atlassian.net/browse/WS-2"
 ```
 
-## GitHub Repository
-https://github.com/awynne/webstore
+## Project Management
+
+### Jira Integration
+- **Jira Project**: WebStore (WS) - https://awynnejira.atlassian.net/projects/WS
+- **Issue Tracking**: All new issues should be created in Jira
+- **Smart Commits**: Use Jira issue keys in commit messages for automatic linking
+- **Branch Naming**: Must include Jira issue key (WS-#) for integration
 
 ## Development Guidance
-- Any issue in the Backlog is ready to pull and work on
-- Only backlog items should be considered ready to work on.  Don't take an issue that is in "no status"
+- Work from Jira backlog items that are in "Backlog" status (ready to work on)
+- Only work on issues that have been moved to "Backlog" status by the project owner
+- Update Jira issue status as work progresses through the workflow
 
 ## Issue Management Workflow
-- The Github project for this repo is WebStore
-- Modify issue statuses as issues get moved through the workflow. 
-- When creating a new issue, add it to the Backlog status. 
-- The project owner then reviews issues and moves the ones to work on to the Ready status.  
-- You can pick the next item in the ready column and move it to "In Progress". 
-- make comments in the issue as significant changes are made. 
-- test, commit, and push to remote, 
-- then create a PR with mention to @awynne and move issue to Review
-- add relevant commits and PR links to the issue comments. 
-- Once a PR has been merged, its issue can be moved to done, and the feature branch deleted.
+- **Primary Tool**: Jira WebStore project (WS)
+- **Issue Lifecycle**: Backlog → In Progress → Review → Testing → Done
+- **Process**:
+  1. Pick issue from Jira Backlog
+  2. Transition to "In Progress"
+  3. Create feature branch: `feature/WS-{number}-{description}`
+  4. Make changes with smart commits: "WS-{number} Description"
+  5. Create PR mentioning @awynne and Jira issue
+  6. Transition to "Review" status
+  7. After PR merge, transition to "Done" and delete feature branch
+
+## GitHub-Jira Integration
+- **Branch naming**: Must include WS-{number} for automatic linking
+- **Commit messages**: Include WS-{number} for issue tracking
+- **Pull Requests**: Reference Jira issue URL in description
+- **GitHub Issues**: Legacy issues migrated to Jira, new issues created in Jira only
 
 ## Pull Request Best Practices
 - When you fix an issue in a PR, leave a comment stating what has been done and that it is fixed
