@@ -31,4 +31,12 @@ class User < ApplicationRecord
   def display_name
     name.presence || email.split("@").first
   end
+
+  # Always return available omniauth providers, even when :omniauthable is not included
+  def self.omniauth_providers
+    oauth_providers = []
+    oauth_providers << :google_oauth2 if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
+    oauth_providers << :github if ENV["GITHUB_CLIENT_ID"].present? && ENV["GITHUB_CLIENT_SECRET"].present?
+    oauth_providers
+  end
 end
