@@ -8,6 +8,8 @@ class CreateCartItems < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :cart_items, [ :cart_id, :product_id ], unique: true, if_not_exists: true
+    unless index_exists?(:cart_items, [ :cart_id, :product_id ])
+      add_index :cart_items, [ :cart_id, :product_id ], unique: true
+    end
   end
 end
