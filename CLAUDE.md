@@ -40,6 +40,7 @@ This is a Rails 8.0.2 e-commerce application featuring product management with c
 - Run `bin/rails test` to verify all tests pass before committing
 - Do not commit to main/master branches.  Use feature branching and PRs.
 - **Run all tests locally before committing**
+- **Ensure that CI tests are passing before submitting the PR**
 
 ## Application Architecture
 
