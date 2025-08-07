@@ -25,6 +25,32 @@
     <% end %>
   </div>
   
+  <% if user_signed_in? %>
+    <div class="cart-actions" style="margin: 2rem 0; padding: 1.5rem; background-color: #f8fafc; border-radius: 8px; border: 2px solid #e2e8f0;">
+      <%= form_with url: add_item_cart_path, method: :post, local: false, data: { turbo: false }, style: "display: flex; align-items: center; gap: 1rem;" do |f| %>
+        <%= f.hidden_field :product_id, value: @product.id %>
+        
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <%= f.label :quantity, "Quantity:", style: "font-weight: 500;" %>
+          <%= f.number_field :quantity, value: 1, min: 1, max: 99, 
+              style: "width: 70px; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" %>
+        </div>
+        
+        <%= f.submit "Add to Cart", style: "background-color: #059669; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 500;" %>
+      <% end %>
+      
+      <p style="margin: 0.5rem 0 0 0; font-size: 14px; color: #6b7280;">
+        🛒 Add this item to your shopping cart
+      </p>
+    </div>
+  <% else %>
+    <div class="login-prompt" style="margin: 2rem 0; padding: 1.5rem; background-color: #fef3c7; border-radius: 8px; border: 2px solid #f59e0b;">
+      <p style="margin: 0; color: #92400e; font-weight: 500;">
+        <%= link_to "Sign in", new_user_session_path, style: "color: #92400e; text-decoration: underline;" %> to add items to your cart
+      </p>
+    </div>
+  <% end %>
+  
   <div class="actions" style="margin-top: 2rem;">
     <%= link_to "← Back to Products", products_path, style: "color: #2563eb; text-decoration: none;" %>
     <span style="margin: 0 1rem;">|</span>

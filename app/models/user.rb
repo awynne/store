@@ -16,6 +16,8 @@ class User < ApplicationRecord
            :recoverable, :rememberable, :validatable
   end
 
+  has_one :cart, dependent: :destroy
+
   validates :name, presence: true, if: -> { provider.present? }
 
   # Admin users must be local accounts (not OAuth)
@@ -56,5 +58,9 @@ class User < ApplicationRecord
     oauth_providers << :google_oauth2 if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
     oauth_providers << :github if ENV["GITHUB_CLIENT_ID"].present? && ENV["GITHUB_CLIENT_SECRET"].present?
     oauth_providers
+  end
+
+  def current_cart
+    cart || create_cart
   end
 end

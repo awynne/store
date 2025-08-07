@@ -1,0 +1,71 @@
+<div style="max-width: 800px; margin: 0 auto; padding: 20px;">
+  <h1>Your Shopping Cart</h1>
+  
+  <% if @cart.cart_items.any? %>
+    <div style="display: grid; gap: 20px;">
+      <% @cart.cart_items.includes(:product).each do |item| %>
+        <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 style="margin: 0 0 8px 0;"><%= item.product.name %></h3>
+            <p style="margin: 0; color: #666; text-transform: capitalize;"><%= item.product.category %></p>
+            <p style="margin: 8px 0; font-weight: bold; color: #2563eb;"><%= item.product.formatted_price %></p>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="quantity_<%= item.id %>" style="font-size: 14px;">Qty:</label>
+              <%= form_with url: update_quantity_cart_path, method: :patch, local: false, data: { turbo: false }, style: "display: inline;" do |f| %>
+                <%= f.hidden_field :product_id, value: item.product.id %>
+                <%= f.number_field :quantity, id: "quantity_#{item.id}", value: item.quantity, min: 1, max: 99, 
+                    style: "width: 60px; padding: 4px; border: 1px solid #ccc; border-radius: 4px;",
+                    onchange: "this.form.submit();" %>
+              <% end %>
+            </div>
+            
+            <div style="font-weight: bold; min-width: 80px; text-align: right;">
+              <%= number_to_currency(item.subtotal) %>
+            </div>
+            
+            <%= form_with url: remove_item_cart_path, method: :delete, local: false, data: { turbo: false, confirm: "Remove #{item.product.name} from cart?" }, style: "display: inline;" do |f| %>
+              <%= f.hidden_field :product_id, value: item.product.id %>
+              <%= f.submit "Remove", style: "background: #dc2626; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      
+      <div style="border-top: 2px solid #2563eb; padding-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <p style="margin: 0; font-size: 18px;"><strong>Items: <%= @cart.item_count %></strong></p>
+        </div>
+        <div style="text-align: right;">
+          <p style="margin: 0; font-size: 24px; font-weight: bold; color: #2563eb;">
+            Total: <%= number_to_currency(@cart.total_price) %>
+          </p>
+        </div>
+      </div>
+      
+      <div style="display: flex; gap: 16px; margin-top: 20px;">
+        <%= form_with url: clear_cart_path, method: :delete, local: false, data: { turbo: false, confirm: "Are you sure you want to clear your entire cart?" }, style: "display: inline;" do |f| %>
+          <%= f.submit "Clear Cart", style: "background: #6b7280; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px;" %>
+        <% end %>
+        
+        <button style="background: #059669; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; font-size: 16px; flex: 1;">
+          Proceed to Checkout
+        </button>
+      </div>
+    </div>
+  <% else %>
+    <div style="text-align: center; padding: 60px 20px;">
+      <h2>Your cart is empty</h2>
+      <p style="color: #666; margin-bottom: 32px;">Add some products to get started!</p>
+      <%= link_to "Continue Shopping", products_path, 
+          style: "background: #2563eb; color: white; text-decoration: none; padding: 12px 24px; border-radius: 8px; display: inline-block;" %>
+    </div>
+  <% end %>
+  
+  <div style="margin-top: 40px; text-align: center;">
+    <%= link_to "← Continue Shopping", products_path, 
+        style: "color: #2563eb; text-decoration: none; font-size: 16px;" %>
+  </div>
+</div>

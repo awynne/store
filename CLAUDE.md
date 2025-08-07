@@ -172,3 +172,6 @@ https://github.com/awynne/webstore
 
 ## Pull Request Best Practices
 - When you fix an issue in a PR, leave a comment stating what has been done and that it is fixed
+
+## Working Guidelines
+- Make comments to JIRA ticket as you progress through the work.  Always include links to relevant commits and/or PRs.

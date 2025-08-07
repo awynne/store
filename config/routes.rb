@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resource :cart, only: [ :show ] do
+    member do
+      post :add_item
+      delete :remove_item
+      patch :update_quantity
+      delete :clear
+    end
+  end
   # Configure Devise routes with OAuth callbacks only if credentials are available
   oauth_providers = []
   oauth_providers << :google_oauth2 if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
