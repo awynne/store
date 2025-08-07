@@ -274,16 +274,20 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
 
   # Google OAuth2 configuration
-  config.omniauth :google_oauth2,
-    ENV["GOOGLE_CLIENT_ID"],
-    ENV["GOOGLE_CLIENT_SECRET"],
-    scope: "email,profile"
+  if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
+    config.omniauth :google_oauth2,
+      ENV["GOOGLE_CLIENT_ID"],
+      ENV["GOOGLE_CLIENT_SECRET"],
+      scope: "email,profile"
+  end
 
   # GitHub OAuth configuration
-  config.omniauth :github,
-    ENV["GITHUB_CLIENT_ID"],
-    ENV["GITHUB_CLIENT_SECRET"],
-    scope: "user:email"
+  if ENV["GITHUB_CLIENT_ID"].present? && ENV["GITHUB_CLIENT_SECRET"].present?
+    config.omniauth :github,
+      ENV["GITHUB_CLIENT_ID"],
+      ENV["GITHUB_CLIENT_SECRET"],
+      scope: "user:email"
+  end
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

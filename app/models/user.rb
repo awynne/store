@@ -1,9 +1,20 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable,
-         omniauth_providers: [ :google_oauth2, :github ]
+
+  # Build list of available OAuth providers based on environment variables
+  oauth_providers = []
+  oauth_providers << :google_oauth2 if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
+  oauth_providers << :github if ENV["GITHUB_CLIENT_ID"].present? && ENV["GITHUB_CLIENT_SECRET"].present?
+
+  if oauth_providers.any?
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :validatable, :omniauthable,
+           omniauth_providers: oauth_providers
+  else
+    devise :database_authenticatable, :registerable,
+           :recoverable, :rememberable, :validatable
+  end
 
   validates :name, presence: true, if: -> { provider.present? }
 

@@ -1,7 +1,16 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: {
-    omniauth_callbacks: "users/omniauth_callbacks"
-  }
+  # Configure Devise routes with OAuth callbacks only if credentials are available
+  oauth_providers = []
+  oauth_providers << :google_oauth2 if ENV["GOOGLE_CLIENT_ID"].present? && ENV["GOOGLE_CLIENT_SECRET"].present?
+  oauth_providers << :github if ENV["GITHUB_CLIENT_ID"].present? && ENV["GITHUB_CLIENT_SECRET"].present?
+
+  if oauth_providers.any?
+    devise_for :users, controllers: {
+      omniauth_callbacks: "users/omniauth_callbacks"
+    }
+  else
+    devise_for :users
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

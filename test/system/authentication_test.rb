@@ -7,7 +7,7 @@ class AuthenticationTest < ApplicationSystemTestCase
     fill_in "Email", with: "newuser@example.com"
     fill_in "Password", with: "password123"
     fill_in "Password confirmation", with: "password123"
-    
+
     find('input[type="submit"][value="Sign up"]').click
 
     assert_text "Welcome! You have signed up successfully."
@@ -30,7 +30,7 @@ class AuthenticationTest < ApplicationSystemTestCase
   test "sign out link works when user is signed in" do
     # Test that the UI shows correctly for authenticated state
     user = users(:regular_user)
-    
+
     # Using Rails' sign_in helper for system tests
     visit root_path
     # This test focuses on UI elements rather than full authentication flow
