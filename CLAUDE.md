@@ -40,6 +40,7 @@ This is a Rails 8.0.2 e-commerce application featuring product management with c
 - Run `bin/rails test` to verify all tests pass before committing
 - Do not commit to main/master branches.  Use feature branching and PRs.
 - **Run all tests locally before committing**
+- **Ensure that CI tests are passing before submitting the PR**
 
 ## Application Architecture
 
@@ -184,3 +185,6 @@ gh pr create --title "WS-2: Create shopping cart functionality" --body "Implemen
 
 ## Pull Request Best Practices
 - When you fix an issue in a PR, leave a comment stating what has been done and that it is fixed
+
+## Working Guidelines
+- Make comments to JIRA ticket as you progress through the work.  Always include links to relevant commits and/or PRs.

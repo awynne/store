@@ -29,6 +29,16 @@
         
         <nav style="display: flex; gap: 1rem; align-items: center;">
           <% if user_signed_in? %>
+            <% cart = current_user.cart %>
+            <% if cart&.cart_items&.any? %>
+              <%= link_to cart_path, style: "color: #007bff; text-decoration: none; display: flex; align-items: center; gap: 0.25rem;" do %>
+                🛒 Cart (<%= cart.item_count %>)
+              <% end %>
+            <% else %>
+              <%= link_to cart_path, style: "color: #666; text-decoration: none;" do %>
+                🛒 Cart (0)
+              <% end %>
+            <% end %>
             <span style="color: #666;">Welcome, <%= current_user.display_name %>!</span>
             <%= link_to "Sign out", destroy_user_session_path, data: { "turbo-method": :delete }, style: "color: #dc3545; text-decoration: none;" %>
           <% else %>
