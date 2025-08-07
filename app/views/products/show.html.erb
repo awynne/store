@@ -1,9 +1,16 @@
 <div class="product-detail" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+  <% if @product.photo.present? %>
+    <img src="<%= @product.photo %>" alt="<%= @product.name %>" class="product-photo" style="width: 100%; max-width: 400px; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 2rem;">
+  <% end %>
+  
   <h1><%= @product.name %></h1>
   
   <div class="product-info" style="margin: 2rem 0;">
-    <p class="category" style="color: #666; text-transform: capitalize; margin-bottom: 0.5rem;">
-      <strong>Category:</strong> <%= @product.category %>
+    <p class="category" style="color: #666; margin-bottom: 0.5rem;">
+      <strong>Category:</strong> <%= @product.category.name %>
+      <% if @product.subcategory %>
+        > <%= @product.subcategory.name %>
+      <% end %>
     </p>
     
     <p class="price" style="font-size: 1.5rem; font-weight: bold; color: #2563eb; margin-bottom: 1rem;">
@@ -21,6 +28,6 @@
   <div class="actions" style="margin-top: 2rem;">
     <%= link_to "← Back to Products", products_path, style: "color: #2563eb; text-decoration: none;" %>
     <span style="margin: 0 1rem;">|</span>
-    <%= link_to "View #{@product.category.capitalize}", products_path(category: @product.category), style: "color: #2563eb; text-decoration: none;" %>
+    <%= link_to "View #{@product.category.name.capitalize}", products_path(category: @product.category.name), style: "color: #2563eb; text-decoration: none;" %>
   </div>
 </div>

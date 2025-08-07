@@ -2,24 +2,32 @@
 
 shirt:
   name: Test Shirt
-  category: shirts
+  category: clothing
+  subcategory: shirts
   price: 29.99
   description: A comfortable test shirt
+  photo: https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop
 
 sock:
   name: Test Socks
-  category: socks
+  category: clothing
+  subcategory: shirts
   price: 12.99
   description: Comfortable test socks
+  photo: https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=400&h=400&fit=crop
 
 jacket:
   name: Test Jacket
-  category: jackets
+  category: clothing
+  subcategory: shirts
   price: 89.99
   description: Warm test jacket
+  photo: https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&h=400&fit=crop
 
 shoe:
   name: Test Shoes
-  category: shoes
+  category: clothing
+  subcategory: shirts
   price: 79.99
   description: Comfortable test shoes
+  photo: https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop

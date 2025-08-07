@@ -1,0 +1,53 @@
+<div class="product-form" style="max-width: 600px; margin: 0 auto; padding: 2rem;">
+  <h1>Edit Product</h1>
+
+  <%= form_with model: @product do |form| %>
+    <% if @product.errors.any? %>
+      <div class="errors" style="background-color: #fef2f2; border: 1px solid #fca5a5; padding: 1rem; margin-bottom: 1rem; border-radius: 6px;">
+        <h3 style="color: #dc2626; margin-top: 0;">Please fix the following errors:</h3>
+        <ul style="color: #dc2626;">
+          <% @product.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :name, style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.text_field :name, style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" %>
+    </div>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :category_id, "Category", style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.select :category_id, options_for_select(Category.all.map { |cat| [cat.name, cat.id] }, @product.category_id), { prompt: "Select a category" }, { style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" } %>
+    </div>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :subcategory_id, "Subcategory (Optional)", style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.select :subcategory_id, options_for_select(Subcategory.all.map { |subcat| ["#{subcat.category.name} > #{subcat.name}", subcat.id] }, @product.subcategory_id), { prompt: "Select a subcategory", include_blank: true }, { style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" } %>
+    </div>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :price, style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.number_field :price, step: 0.01, style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" %>
+    </div>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :photo, "Photo URL", style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.url_field :photo, style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px;" %>
+      <small style="color: #666; font-size: 0.875rem;">Enter a URL for the product photo</small>
+    </div>
+
+    <div class="field" style="margin-bottom: 1.5rem;">
+      <%= form.label :description, style: "display: block; font-weight: bold; margin-bottom: 0.5rem;" %>
+      <%= form.text_area :description, rows: 4, style: "width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; resize: vertical;" %>
+    </div>
+
+    <div class="actions" style="margin-top: 2rem;">
+      <%= form.submit "Update Product", style: "background-color: #2563eb; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 6px; cursor: pointer; margin-right: 1rem;" %>
+      <%= link_to "Show", @product, style: "color: #6b7280; text-decoration: none; padding: 0.75rem 1.5rem; margin-right: 1rem;" %>
+      <%= link_to "Cancel", products_path, style: "color: #6b7280; text-decoration: none; padding: 0.75rem 1.5rem;" %>
+    </div>
+  <% end %>
+</div>
