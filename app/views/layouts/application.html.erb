@@ -23,6 +23,29 @@
   </head>
 
   <body>
+    <header style="background: #f8f9fa; padding: 1rem; border-bottom: 1px solid #dee2e6; margin-bottom: 1rem;">
+      <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+        <%= link_to "WebStore", root_path, style: "font-size: 1.5rem; font-weight: bold; text-decoration: none; color: #333;" %>
+        
+        <nav style="display: flex; gap: 1rem; align-items: center;">
+          <% if user_signed_in? %>
+            <span style="color: #666;">Welcome, <%= current_user.display_name %>!</span>
+            <%= link_to "Sign out", destroy_user_session_path, data: { "turbo-method": :delete }, style: "color: #dc3545; text-decoration: none;" %>
+          <% else %>
+            <%= link_to "Sign up", new_user_registration_path, style: "color: #007bff; text-decoration: none;" %>
+            <%= link_to "Sign in", new_user_session_path, style: "color: #007bff; text-decoration: none;" %>
+          <% end %>
+        </nav>
+      </div>
+    </header>
+    
+    <% if notice %>
+      <p class="notice" style="background: #d4edda; color: #155724; padding: 12px; margin: 0; border-left: 4px solid #c3e6cb;"><%= notice %></p>
+    <% end %>
+    <% if alert %>
+      <p class="alert" style="background: #f8d7da; color: #721c24; padding: 12px; margin: 0; border-left: 4px solid #f5c6cb;"><%= alert %></p>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>
