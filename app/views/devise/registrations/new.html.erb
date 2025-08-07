@@ -1,0 +1,49 @@
+<div style="max-width: 400px; margin: 2rem auto; padding: 2rem; border: 1px solid #dee2e6; border-radius: 8px;">
+  <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Sign up</h2>
+
+  <% if User.omniauth_providers.any? %>
+    <div style="margin-bottom: 1.5rem;">
+      <% if User.omniauth_providers.include?(:google_oauth2) %>
+        <%= link_to "Sign up with Google", user_google_oauth2_omniauth_authorize_path, 
+            method: :post, 
+            style: "display: block; width: 100%; padding: 12px; background: #4285F4; color: white; text-decoration: none; border-radius: 4px; text-align: center; margin-bottom: 8px;" %>
+      <% end %>
+      
+      <% if User.omniauth_providers.include?(:github) %>
+        <%= link_to "Sign up with GitHub", user_github_omniauth_authorize_path, 
+            method: :post, 
+            style: "display: block; width: 100%; padding: 12px; background: #333; color: white; text-decoration: none; border-radius: 4px; text-align: center;" %>
+      <% end %>
+    </div>
+
+    <div style="text-align: center; margin: 1.5rem 0; color: #666;">or</div>
+  <% end %>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  </div>
+<% end %>
+
+  <%= render "devise/shared/links" %>
+</div>
