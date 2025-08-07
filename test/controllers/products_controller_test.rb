@@ -1,6 +1,7 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
   # Index action tests
   test "should get index" do
     get products_url
@@ -122,13 +123,21 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal product, assigns(:product)
   end
 
-  # New action tests
-  test "should get new" do
+  # New action tests (admin required)
+  test "should get new as admin" do
+    sign_in users(:admin)
     get new_product_url
     assert_response :success
   end
 
-  test "new should display product form" do
+  test "should redirect new for non-admin" do
+    get new_product_url
+    assert_redirected_to root_path
+    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+  end
+
+  test "new should display product form for admin" do
+    sign_in users(:admin)
     get new_product_url
     assert_response :success
 
@@ -141,8 +150,9 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_select "textarea[name='product[description]']"
   end
 
-  # Create action tests
-  test "should create product" do
+  # Create action tests (admin required)
+  test "should create product as admin" do
+    sign_in users(:admin)
     category = categories(:clothing)
     assert_difference("Product.count") do
       post products_url, params: {
@@ -159,7 +169,23 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to product_url(Product.last)
   end
 
-  test "should not create product with invalid data" do
+  test "should redirect create for non-admin" do
+    category = categories(:clothing)
+    assert_no_difference("Product.count") do
+      post products_url, params: {
+        product: {
+          name: "New Test Product",
+          category_id: category.id,
+          price: 25.99
+        }
+      }
+    end
+    assert_redirected_to root_path
+    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+  end
+
+  test "should not create product with invalid data as admin" do
+    sign_in users(:admin)
     assert_no_difference("Product.count") do
       post products_url, params: {
         product: {
@@ -174,14 +200,23 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_content
   end
 
-  # Edit action tests
-  test "should get edit" do
+  # Edit action tests (admin required)
+  test "should get edit as admin" do
+    sign_in users(:admin)
     product = products(:shirt)
     get edit_product_url(product)
     assert_response :success
   end
 
-  test "edit should display product form with current values" do
+  test "should redirect edit for non-admin" do
+    product = products(:shirt)
+    get edit_product_url(product)
+    assert_redirected_to root_path
+    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+  end
+
+  test "edit should display product form with current values for admin" do
+    sign_in users(:admin)
     product = products(:shirt)
     get edit_product_url(product)
     assert_response :success
@@ -191,8 +226,9 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[name='product[photo]'][value=?]", product.photo
   end
 
-  # Update action tests
-  test "should update product" do
+  # Update action tests (admin required)
+  test "should update product as admin" do
+    sign_in users(:admin)
     product = products(:shirt)
     patch product_url(product), params: {
       product: {
@@ -207,7 +243,22 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "https://example.com/updated-photo.jpg", product.photo
   end
 
-  test "should not update product with invalid data" do
+  test "should redirect update for non-admin" do
+    product = products(:shirt)
+    original_name = product.name
+    patch product_url(product), params: {
+      product: {
+        name: "Hacked Name"
+      }
+    }
+    assert_redirected_to root_path
+    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+    product.reload
+    assert_equal original_name, product.name
+  end
+
+  test "should not update product with invalid data as admin" do
+    sign_in users(:admin)
     product = products(:shirt)
     original_name = product.name
 
@@ -223,14 +274,24 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_equal original_name, product.name
   end
 
-  # Destroy action tests
-  test "should destroy product" do
+  # Destroy action tests (admin required)
+  test "should destroy product as admin" do
+    sign_in users(:admin)
     product = products(:shirt)
     assert_difference("Product.count", -1) do
       delete product_url(product)
     end
 
     assert_redirected_to products_url
+  end
+
+  test "should redirect destroy for non-admin" do
+    product = products(:shirt)
+    assert_no_difference("Product.count") do
+      delete product_url(product)
+    end
+    assert_redirected_to root_path
+    assert_equal "Access denied. Admin privileges required.", flash[:alert]
   end
 
   # Root route test

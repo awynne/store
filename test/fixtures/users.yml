@@ -1,9 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-regular_user:
+admin:
+  email: "admin@webstore.com"
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
+  name: "Admin User"
+  admin: true
+
+regular:
   email: "user@example.com"
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password123') %>
   name: "Regular User"
+  admin: false
 
 oauth_user:
   email: "oauth@example.com"
@@ -11,3 +18,4 @@ oauth_user:
   name: "OAuth User"
   provider: "google_oauth2"
   uid: "123456789"
+  admin: false

@@ -18,6 +18,9 @@ class User < ApplicationRecord
 
   validates :name, presence: true, if: -> { provider.present? }
 
+  # Admin users must be local accounts (not OAuth)
+  validates :admin, exclusion: { in: [ true ], message: "accounts must be local (not OAuth)" }, if: -> { provider.present? }
+
   def self.from_omniauth(auth)
     where(email: auth.info.email).first_or_create do |user|
       user.email = auth.info.email
@@ -25,11 +28,26 @@ class User < ApplicationRecord
       user.name = auth.info.name
       user.provider = auth.provider
       user.uid = auth.uid
+      # Ensure OAuth users are never admins
+      user.admin = false
     end
   end
 
   def display_name
     name.presence || email.split("@").first
+  end
+
+  # Admin-related methods
+  def admin?
+    admin
+  end
+
+  def local_account?
+    provider.blank?
+  end
+
+  def can_be_admin?
+    local_account?
   end
 
   # Always return available omniauth providers, even when :omniauthable is not included
