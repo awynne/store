@@ -10,7 +10,9 @@ class CreateSubcategoriesAndAssignProducts < ActiveRecord::Migration[8.0]
     }
 
     subcategories_data.each do |category_name, subcategory_names|
-      category = Category.find_by!(name: category_name)
+      category = Category.find_by(name: category_name)
+      next unless category # Skip if category doesn't exist
+      
       subcategory_names.each do |subcategory_name|
         Subcategory.find_or_create_by!(name: subcategory_name, category: category)
       end
