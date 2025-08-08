@@ -184,3 +184,21 @@ gh pr create --title "WS-2: Create shopping cart functionality" --body "Implemen
 
 ## Pull Request Best Practices
 - When you fix an issue in a PR, leave a comment stating what has been done and that it is fixed
+
+## Related Repositories
+
+### Infrastructure Repository: webstore-infra
+- **Location**: `../webstore-infra` (sibling directory)
+- **Purpose**: AWS Infrastructure as Code using Terraform
+- **Contents**: 
+  - Terraform modules for AWS deployment
+  - Infrastructure CI/CD workflows
+  - Deployment and operational documentation
+  - Cost optimization and monitoring procedures
+- **Implementation**: See WS-14 for AWS production deployment requirements
+
+### Repository Separation Strategy
+- **webstore** (this repo): Rails application development, features, business logic
+- **webstore-infra**: Infrastructure, deployment, operations, monitoring
+- **Integration**: Application deployments reference infrastructure outputs
+- **CI/CD**: Separate workflows for application and infrastructure changes
